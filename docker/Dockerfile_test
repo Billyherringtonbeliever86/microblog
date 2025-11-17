@@ -1,0 +1,22 @@
+FROM python:3.8-alpine
+
+WORKDIR /microblog
+
+COPY microblog.py boot.sh requirements.txt pytest.ini Makefile .pylintrc .coveragerc ./
+COPY migrations ./migrations
+COPY scripts ./scripts
+COPY requirements ./requirements
+COPY tests.sh ./tests.sh
+
+
+VOLUME ["/microblog/app", "/microblog/tests"]
+
+
+RUN <<EOF 
+    apk add --no-cache make
+    make install-test
+    chmod +x tests.sh
+    
+EOF
+
+CMD ["sh", "./tests.sh"]

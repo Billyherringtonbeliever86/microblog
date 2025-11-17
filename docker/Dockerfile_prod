@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1.4
+FROM python:3.8-alpine
+
+# Adds user and work directory
+RUN adduser -D microblog
+WORKDIR /home/microblog
+
+# Copy application files
+COPY app app
+COPY migrations migrations
+COPY requirements requirements
+COPY requirements.txt microblog.py boot.sh ./
+
+# Create virtual environment & install dependencies
+RUN python -m venv .venv && \
+    .venv/bin/pip install --no-cache-dir -r requirements.txt
+
+ENV FLASK_APP=microblog.py
+
+# Make script executable and set correct ownership
+RUN <<EOF
+chmod +x boot.sh
+chown -R microblog:microblog .
+EOF
+
+# Use non-root user
+USER microblog
+
+# Expose Flask/Gunicorn port
+EXPOSE 5000
+
+# Entrypoint to start the app
+ENTRYPOINT ["./boot.sh"]
