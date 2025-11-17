@@ -3,6 +3,7 @@ app.db
 aws_keys.yml
 logs/
 .pylint.d
+notes.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
