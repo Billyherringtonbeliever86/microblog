@@ -166,10 +166,10 @@ test-html: exec-tests
 ## target: clean-py                     - Remove generated python files
 .PHONY: clean-py
 clean-py:
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-	find . -name '.pytest_cache' -exec rm -fr {} +
+	-find . -name '*.pyc' -exec rm -f {} + 2>/dev/null || true
+	-find . -name '*.pyo' -exec rm -f {} + 2>/dev/null || true
+	-find . -name '__pycache__' -exec rm -fr {} + 2>/dev/null || true
+	-find . -name '.pytest_cache' -exec rm -fr {} + 2>/dev/null || true
 
 
 
